@@ -1,0 +1,32 @@
+
+(define (square n) (* n n))
+(define (square-tree list-in)
+	(define (square-iter y)
+		(cond ((number? y) (square y))
+			  ((pair? y) (cons (square-iter (car y)) (square-iter (cdr y))) )
+			  (else '())))
+
+	(square-iter list-in)
+)
+(define (square-map list-in)
+	(map (lambda (sub-tree)
+			(if (pair? sub-tree)
+				(square-map sub-tree)
+				(square sub-tree))) 
+		list-in))
+
+(define (square-tree tree)
+	(tree-map square tree))
+
+(define (tree-map func tree)
+	(cond ((number? tree) (func tree))
+		  ((pair? tree) (cons (tree-map func (car tree)) (tree-map func (cdr tree))))
+		  (else '())
+	)
+)
+
+(define x (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+(newline)
+;(display (square-map x))
+;(display (square-tree x))
+(display (square-tree x))

@@ -1,0 +1,20 @@
+
+(define (subsets s)
+	(if (null? s)
+		(list '())
+		(let ((rest (subsets (cdr s))))
+			 (append rest (map (lambda (x) (append x (list (car s))))
+			 				    rest)))))
+
+(display (subsets (list 1 2 3)))
+
+;; (subsets (1 2 3))
+;; (subsets (2 3))
+;; (subsets (3))
+;; (subsets (nil))
+;; (append nil (map (lambda(x) (append nil (3))) )nil)
+;; --> (nil, (3))
+;; (append (nil, (3)) (map (lambda(x) (append (nil, (3)) (2, 3))) (nil, (3))))
+;; --> (nil, (3), (2), (2,3))
+;; (append (...) (map (lambda(x) (append (...) (1, 2, 3)) (...))))
+;; --> (nil, (3), (2), (2,3), (1), (1,3), (1,2), (1,2,3))

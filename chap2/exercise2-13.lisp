@@ -1,0 +1,67 @@
+
+
+(define (width-of-interval x)
+	(if (= (- (upper-bound x) (lower-bound x)) 0)
+		(display "width of interval is 0")
+		(/ (- (upper-bound x) (lower-bound x)) 2.0)
+	))
+
+(define (add-interval x y)
+	(make-interval (+ (lower-bound x) (lower-bound y))
+				   (+ (upper-bound x) (upper-bound y))))
+(define (sub-interval x y)
+	(make-interval (- (lower-bound y) (upper-bound x))
+				   (- (upper-bound y) (lower-bound x)))
+)
+
+(define (mul-interval x y)
+	(let ((p1 (* (lower-bound x) (lower-bound y)))
+		  (p2 (* (lower-bound x) (upper-bound y)))
+		  (p3 (* (upper-bound x) (lower-bound y)))
+		  (p4 (* (upper-bound x) (upper-bound y))))
+		  
+		  	(make-interval (min p1 p2 p3 p4)
+						   (max p1 p2 p3 p4))
+		  ))
+(define (div-interval x y)
+	(mul-interval
+	 x
+	 (make-interval (/ 1.0 (upper-bound y))
+	 				(/ 1.0 (lower-bound y)))))
+(define (make-center-percent x) 
+	(let ((width-x (width x))
+		  (center-x (center x)))
+			(* (- 1 (/ (- center-x width-x) center-x)) 100)
+	))
+
+(define (mul-make-percent x)
+	(* (/ (- (upper-bound x) (lower-bound x))
+	      (+ (upper-bound x) (lower-bound x))) 100) )
+
+
+(define (make-interval a b) (cons a b))
+(define (make-center-width c w) (make-interval (- c w) (+ c w)))
+(define (center i) (/ (+ (lower-bound i) (upper-bound i)) 2))
+(define (width i) (/ (- (upper-bound i) (lower-bound i)) 2))
+(define (upper-bound x) (cdr x))
+(define (lower-bound x) (car x))
+(define (print x) 
+		(display "(")
+		(display (car x))
+		(display ", ")
+		(display (cdr x))
+		(display ")")
+		(newline))
+
+(define x (make-center-width 2 0.0001))
+(define y (make-center-width 5 0.0001))
+(define mul (mul-interval x y))
+
+(display (exact->inexact (mul-make-percent x)))
+(newline)
+(display (exact->inexact (mul-make-percent y)))
+(newline)
+(print mul)
+(display (exact->inexact (mul-make-percent mul)))
+(newline)
+(display (+ (mul-make-percent x) (mul-make-percent y)))

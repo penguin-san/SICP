@@ -1,0 +1,30 @@
+
+(define (make-mobile left right)
+	(list left right))
+(define (left-branch mobile)
+	(car mobile))
+(define (right-branch mobile)
+	(cdr mobile))
+
+(define (make-branch length structure)
+	(list length structure))
+(define (branch-length branch) 
+	(car branch))
+(define (branch-structure branch)
+	(cdr branch))
+
+(define (branch-weight branch)
+	(display branch)
+	(newline)
+	(let ((structure-v (branch-structure branch)))
+		(cond ((number? structure-v) structure-v)
+			  (else (total-weight structure-v))
+		)
+	))
+
+(define (total-weight mobile)
+	(+ (branch-weight (left-branch mobile))
+	   (branch-weight (right-branch mobile))))
+
+(define a (make-mobile (make-branch 2 3) (make-branch 2 3)))
+(display (branch-weight (car a)))
